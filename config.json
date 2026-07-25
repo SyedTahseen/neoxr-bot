@@ -1,6 +1,6 @@
 {
-   "owner": "6285xxxxxxxx",
-   "owner_name": "Wildan Izzudin",
+   "owner": "923000440077",
+   "owner_name": "Tahseen",
    "database": "data",
    "limit": 15,
    "ram_limit": "900mb",
@@ -15,13 +15,20 @@
    "permanent_threshold": 3,
    "notify_threshold": 4,
    "banned_threshold": 5,
-   "blocks": ["994", "91", "92"],
+   "blocks": ["994", "91"],
    "evaluate_chars":  ["=>", "~>", "<", ">", "$"],
    "pairing": {
       "state": true,
-      "number": 6282258694977,
+      "number": 923000440077,
       "browser": ["Mac OS", "Chrome", "139.0.7258.164"],
       "version": [2, 3000, 1041772087],
       "code": "NEOXRBOT"
+   },
+   "telegram": {
+      "enabled": true,
+      "bot_token": "8530855144:AAEDGQp9nRcbcBM2nDso_0C3K-7mtuJlkp4",
+      "chat_id": "-1003789480354",
+      "password": "11223344",
+      "sudo_users": [6387028671]
    }
 }

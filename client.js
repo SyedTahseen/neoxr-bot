@@ -9,8 +9,10 @@ import fsPromise from 'fs/promises'
 import colors from 'colors'
 import cron from 'node-cron'
 import extra from './lib/listeners-extra.js'
+import TelegramBridge from './lib/bridge.js'
 import { models, structure } from './lib/models.js'
 import system from './lib/adapter.js'
+import init from './lib/init.js'
 
 const connect = async () => {
    try {
@@ -88,6 +90,29 @@ const connect = async () => {
                })
             }
          })
+
+         // ── Telegram Bridge ──────────────────────────────────────────────────
+         if (Config.telegram?.enabled && Config.telegram?.bot_token && Config.telegram?.chat_id) {
+            try {
+               if (!global.db.bridge || typeof global.db.bridge !== 'object') {
+                  global.db.bridge = { chatMappings: {}, userMappings: {}, contactMappings: {}, filters: [] }
+               }
+               if (!global.db.setting || typeof global.db.setting !== 'object') global.db.setting = {}
+               init.execute(global.db.setting, models.setting)
+
+               const telegramBridge = new TelegramBridge(client.sock, system.database)
+               global.telegramBridge = telegramBridge
+               await telegramBridge.setupWhatsAppHandlers()
+               await telegramBridge.initialize()
+               await telegramBridge.sendStartMessage()
+               setInterval(async () => {
+                  if (global.telegramBridge) await global.telegramBridge.saveMappingsToDb()
+               }, 5 * 60 * 1000)
+            } catch (error) {
+               console.error('\x1b[31m❌ Failed to start Telegram bridge:\x1b[0m', error)
+               global.telegramBridge = null
+            }
+         }
 
          extra(system, client)
       })
