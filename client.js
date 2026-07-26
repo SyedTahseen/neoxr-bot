@@ -100,7 +100,7 @@ const connect = async () => {
                if (!global.db.setting || typeof global.db.setting !== 'object') global.db.setting = {}
                init.execute(global.db.setting, models.setting)
 
-               const telegramBridge = new TelegramBridge(client.sock, system.database)
+               const telegramBridge = new TelegramBridge(client, system.database)
                global.telegramBridge = telegramBridge
                await telegramBridge.setupWhatsAppHandlers()
                await telegramBridge.initialize()
