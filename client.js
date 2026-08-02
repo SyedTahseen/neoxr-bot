@@ -1,10 +1,8 @@
 import dns from 'dns'
-// Force Node to try IPv4 addresses before IPv6 when resolving hosts (e.g. api.telegram.org).
-// On many VPS providers the network interface has a global IPv6 address assigned but no
-// working IPv6 route out to the internet. Node 18+ defaults to the "verbatim" DNS result
-// order, so it can pick the (unreachable) IPv6 address first, stall/timeout, and only then
-// fall back — surfacing as EFATAL / AggregateError (ENETUNREACH + ETIMEDOUT) from
-// node-telegram-bot-api. This makes IPv4 the default attempt and avoids that stall.
+// Server is IPv4-only (e.g. Oracle free tier), but DNS for api.telegram.org still
+// returns an IPv6 address too. Node's default "verbatim" DNS order can try that
+// unreachable IPv6 address first, causing EFATAL/AggregateError (ENETUNREACH) from
+// node-telegram-bot-api. This forces IPv4 to be tried first.
 dns.setDefaultResultOrder('ipv4first')
 
 import { Client, Config, Utils } from '@neoxr/wb'
