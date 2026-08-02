@@ -1,8 +1,4 @@
 import dns from 'dns'
-// Server is IPv4-only (e.g. Oracle free tier), but DNS for api.telegram.org still
-// returns an IPv6 address too. Node's default "verbatim" DNS order can try that
-// unreachable IPv6 address first, causing EFATAL/AggregateError (ENETUNREACH) from
-// node-telegram-bot-api. This forces IPv4 to be tried first.
 dns.setDefaultResultOrder('ipv4first')
 
 import { Client, Config, Utils } from '@neoxr/wb'
